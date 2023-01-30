@@ -41,9 +41,12 @@ def accuracy_explanation(test_indices, original_predictions, adjacency_matrices,
             indices = torch.nonzero(adjusted != adjacency_matrices[i])
 
             for j in indices:
+                # if head and tail of edge is in the motif
                 if original_predictions[mapping[j[0].item()]] != 0 and original_predictions[mapping[j[1].item()]] != 0:
                     in_motif = in_motif + 1
                 total = total + 1
+
+            # proportion is defined like how they did it in their code
             prop_correct = float(in_motif / total)
             proportions.append(prop_correct)
 
