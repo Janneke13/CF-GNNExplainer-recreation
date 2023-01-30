@@ -178,7 +178,7 @@ def loss_function(beta, output_g, prediction_original, prediction_perturbed, adj
     :return: the loss and the perturbed adjacency matrix (the cf-example if they're different
     """
     # find nll loss using the output and the predictions
-    nll_loss_part = nll_loss(F.log_softmax(output_g), target=prediction_original) # removed dim 1 from log softmax
+    nll_loss_part = nll_loss(F.log_softmax(output_g), target=prediction_original) 
     loss_pred = - (prediction_original == prediction_perturbed).float() * nll_loss_part
 
     # get the new adjacency matrix
@@ -191,7 +191,7 @@ def loss_function(beta, output_g, prediction_original, prediction_perturbed, adj
     return loss_pred + beta * loss_dist, adjacency_matrix_perturbed, loss_dist, loss_pred
 
 
-# old - we don't use this anymore
+# old - i don't use this anymore, but i left it in for completeness
 def create_subgraph_neighbourhood(start_vertex, k_hops, labels, features, original_adj):
     """
     Creates and returns the subgraph neighbourhood.
