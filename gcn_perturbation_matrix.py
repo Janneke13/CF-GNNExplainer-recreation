@@ -42,7 +42,7 @@ class GCNPerturbed(torch.nn.Module):
     Implementation of a GCN, but with a perturbation matrix.
     """
 
-    def __init__(self, W1, b1, W2, b2, W3, b3, wl, bl, number_neighbour_nodes):
+    def __init__(self, W1, b1, W2, b2, W3, b3, wl, bl, number_neighbour_nodes, initialization='ones'):
         """
         Initializes the GCN with fixed weight matrices.
         :param W1: pre-trained weight matrix for GCN layer 1
@@ -71,8 +71,14 @@ class GCNPerturbed(torch.nn.Module):
         self.linear_layer.bias.requires_grad = False
 
         # p_hat should be a vector --> have to use this to populate a symmetric matrix later on
+
         size_vector = int(number_neighbour_nodes * (number_neighbour_nodes + 1) / 2)
-        self.p_hat = torch.nn.Parameter(torch.ones(size_vector, requires_grad=True))
+
+        if initialization == "ones":
+            self.p_hat = torch.nn.Parameter(torch.ones(size_vector, requires_grad=True))
+        elif initialization == "uniform":
+            self.p_hat = torch.nn.Parameter(torch.Tensor.uniform_(torch.zeros(size_vector)), requires_grad=True)
+
 
     # this is similar to the original GCN, but now uses the p_hat!!
     def forward(self, X, A):
