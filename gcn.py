@@ -7,6 +7,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse import diags
 from sklearn.metrics import accuracy_score
 import pickle
+import math
 
 """
 All functions needed to create and train a GCN model (3-layer)
@@ -21,18 +22,30 @@ class GCNlayer(torch.nn.Module):
     This implementation includes a bias as well, which is initialized as zeroes.
     """
 
-    def __init__(self, n_in, n_out):
+    def __init__(self, n_in, n_out, initialization= 'basic'):
         """
         Initialized a GCN layer
         :param n_in: number of inputs
         :param n_out: number of outputs
         """
         super().__init__()
-        matrix_to_fill = torch.empty(n_in, n_out)  # create a matrix of a certain shape (values don't matter)
-        initialized_w = torch.nn.init.kaiming_uniform_(matrix_to_fill)  # use uniform kaiming to initialize
-        self.W = torch.nn.Parameter(initialized_w)  # set W to be learnable
-        bias = torch.zeros(n_out, dtype=torch.float)  # create a bias --> initialize as zeroes
-        self.b = torch.nn.Parameter(bias)
+        if initialization == "basic":
+            matrix_to_fill = torch.empty(n_in, n_out)  # create a matrix of a certain shape (values don't matter)
+            initialized_w = torch.nn.init.kaiming_uniform_(matrix_to_fill)  # use uniform kaiming to initialize
+            self.W = torch.nn.Parameter(initialized_w)  # set W to be learnable
+            bias = torch.zeros(n_out, dtype=torch.float)  # create a bias --> initialize as zeroes
+            self.b = torch.nn.Parameter(bias)
+        else:
+            # similar to what they do in the paper:
+            W = torch.empty(n_in, n_out, dtype=torch.float)
+            b = torch.empty(n_out, dtype=torch.float)
+
+            std = 1. / math.sqrt(W.size(1))
+            W.data.uniform_(-std, std)
+            b.data.uniform_(-std, std)
+
+            self.W = torch.nn.Parameter(W)
+            self.b = torch.nn.Parameter(b)
 
     def forward(self, X, A_hat):
         """

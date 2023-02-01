@@ -77,7 +77,7 @@ class GCNPerturbed(torch.nn.Module):
         if initialization == "ones":
             self.p_hat = torch.nn.Parameter(torch.ones(size_vector, requires_grad=True))
         elif initialization == "uniform":
-            self.p_hat = torch.nn.Parameter(torch.Tensor.uniform_(torch.zeros(size_vector)), requires_grad=True)
+            self.p_hat = torch.nn.Parameter(torch.FloatTensor(size_vector).uniform_(), requires_grad=True)
 
 
     # this is similar to the original GCN, but now uses the p_hat!!
