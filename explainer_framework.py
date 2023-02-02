@@ -53,3 +53,7 @@ def train_and_get_example(inx, pred_old, pert_model, optimizer, bet, adjacency_s
     optimizer.step()
 
     return perturbation_matrix, new_prediction, loss.item()
+
+
+def get_examples_full():
+    pass
