@@ -17,13 +17,14 @@ The GCN models used in this repository, of which the predictions will be explain
 - In 'calculate_metrics', functions to calculate the metrics as described in the paper/code are given.
 
 **Additionally, notebooks are given to get several results and get baselines:**
+- 'gcn_train_new.ipynb' trains the GCN model that was used in this recreation, and creates plots for it.
 - 'baselines_notebook.ipynb' gets the baselines and calculates the metrics for them.
-- 'CF_explainer_train.ipynb' trains the perturbation matrix and gets the metrics for this.
-- 'CF_explainer_train_extension.ipynb' is similar, but has a different initialization function (extension).
-- 'CF_explainer_train_originalgcn.ipynb' is also similar, but uses the weight matrices and GCN of the original paper, to compare to my implemented and trained one.
-
+- 'CF-explainer-all.ipynb' trains the perturbation matrix and gets the metrics for this.
+  - It consists of three different types: the pre-trained GCN model of the original paper added to my explanation framework, the GCN trained in this recreation with its explanation framework, and the GCN trained in this recreation, with my extended framework.
+  
 ### Important notes:
 - The models in folder models_original_paper, along with the gcn code in this folder, are used for evaluation and comparison purposes only.
 These models were directly taken from the original codebase, which can be found in https://github.com/a-lucic/cf-gnnexplainer.  
 - The data in folder 'data', is also directly taken from https://github.com/a-lucic/cf-gnnexplainer.
+- The code in the gnnexplainer folder, is from the original GNNExplainer paper, which can be found in https://github.com/RexYing/gnn-model-explainer. 
 - The rest of the code is written from scratch, while trying to consult the original code as little as possible.

@@ -28,9 +28,11 @@ def fidelity(total_nr, total_nr_examples):
     return 1.0 - float(total_nr_examples / total_nr)
 
 
+# we do this for both edges and vertices
 def accuracy_explanation(test_indices, original_predictions, adjacency_matrices, perturbation_matrices, mapping_old):
     # accuracy:
     proportions = []
+    proportions_vertices = []
 
     for i in range(len(test_indices)):
         in_motif = 0
@@ -42,15 +44,34 @@ def accuracy_explanation(test_indices, original_predictions, adjacency_matrices,
             adjusted = torch.mul(perturbation_matrices[i][-1], adjacency_matrices[i])
             indices = torch.nonzero(adjusted != adjacency_matrices[i])
 
+            vertex_set = set()
+            vertex_set_in_motif = set()
+
             for j in indices:
                 # if head and tail of edge is in the motif
                 if original_predictions[mapping[j[0].item()]] != 0 and original_predictions[mapping[j[1].item()]] != 0:
                     in_motif = in_motif + 1
+
                 total = total + 1
+
+                # add the nodes in the edge to the vertex set:
+                vertex_set.add(mapping[j[0].item()])
+                vertex_set.add(mapping[j[1].item()])
+
+                # add it to the motif set if it is not outside of the motif
+                if original_predictions[mapping[j[0].item()]] != 0:
+                    vertex_set_in_motif.add(mapping[j[0].item()])
+
+                if original_predictions[mapping[j[1].item()]] != 0:
+                    vertex_set_in_motif.add(mapping[j[1].item()])
 
             # proportion is defined like how they did it in their code
             prop_correct = float(in_motif / total)
             proportions.append(prop_correct)
+
+            # proportions of vertices involved that are in the motif:
+            prop_vertex = float(len(vertex_set_in_motif)/len(vertex_set))
+            proportions_vertices.append(prop_vertex)
 
     if proportions != []:
         proportions_mean = mean(proportions)
@@ -58,7 +79,16 @@ def accuracy_explanation(test_indices, original_predictions, adjacency_matrices,
     else:
         proportions_mean = None
         proportions_std = None
-    return proportions_mean, proportions_std
+
+    # how they do it in the paper
+    if proportions_vertices != []:
+        proportions_vertices_mean = mean(proportions_vertices)
+        proportions_vertices_std = stdev(proportions_vertices)
+    else:
+        proportions_vertices_mean = None
+        proportions_vertices_std = None
+
+    return proportions_mean, proportions_std, proportions_vertices_mean, proportions_vertices_std
 
 
 def sparsity(adjacency_matrices, perturbation_matrices):
