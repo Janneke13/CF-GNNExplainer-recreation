@@ -1,3 +1,5 @@
+# CODE RETRIEVED FROM: https://github.com/RexYing/gnn-model-explainer
+
 """ featgen.py
 
 Node feature generators.

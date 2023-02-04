@@ -1,3 +1,5 @@
+# CODE RETRIEVED FROM: https://github.com/RexYing/gnn-model-explainer
+
 """graph_utils.py
 
    Utility for sampling graphs from a dataset.

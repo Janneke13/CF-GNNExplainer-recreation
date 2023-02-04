@@ -1,3 +1,5 @@
+# CODE RETRIEVED FROM: https://github.com/RexYing/gnn-model-explainer
+
 """ io_utils.py
 
     Utilities for reading and writing logs.
@@ -23,7 +25,7 @@ from torch.autograd import Variable
 
 # --- changed this
 #import utils.featgen as featgen
-import gnnexplainer.featgen as featgen
+import featgen
 
 
 use_cuda = torch.cuda.is_available()
