@@ -7,6 +7,7 @@ Contains all methods to calculate the metrics needed for evaluation.
 """
 
 
+# calculates the explanation size as described in the paper
 def explanation_size(examples_all, subgraphs):
     # make a list of all explanation sizes
     expl_size = []
@@ -24,11 +25,13 @@ def explanation_size(examples_all, subgraphs):
     return mean_expl_size, std_expl_size, expl_size
 
 
+# calculates the fidelity as described in the paper
 def fidelity(total_nr, total_nr_examples):
     return 1.0 - float(total_nr_examples / total_nr)
 
 
 # we do this for both edges and vertices
+# vertices is how they do it in the original source code --> edges is closer to how it's described
 def accuracy_explanation(test_indices, original_predictions, adjacency_matrices, perturbation_matrices, mapping_old):
     # accuracy:
     proportions = []
@@ -91,6 +94,7 @@ def accuracy_explanation(test_indices, original_predictions, adjacency_matrices,
     return proportions_mean, proportions_std, proportions_vertices_mean, proportions_vertices_std
 
 
+# calculates the sparsity (as described in the paper)
 def sparsity(adjacency_matrices, perturbation_matrices):
     spars = []
 

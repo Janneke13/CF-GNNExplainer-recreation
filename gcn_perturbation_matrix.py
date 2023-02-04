@@ -197,7 +197,7 @@ def loss_function(beta, output_g, prediction_original, prediction_perturbed, adj
     return loss_pred + beta * loss_dist, adjacency_matrix_perturbed, loss_dist, loss_pred
 
 
-# old - i don't use this anymore, but i left it in for completeness
+# old -->  i don't use this anymore, but i left it in for completeness
 def create_subgraph_neighbourhood(start_vertex, k_hops, labels, features, original_adj):
     """
     Creates and returns the subgraph neighbourhood.
